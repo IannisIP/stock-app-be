@@ -1,4 +1,5 @@
-﻿using api.Models;
+﻿using api.Dtos.Stock;
+using api.Models;
 using api.Services;
 using api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetAllAsync()
         {
             var stocks = await _stockService.GetAllAsync();
-            return Ok(stocks.ToList());
+            return Ok(stocks);
         }
 
         [HttpGet("{id}")]
@@ -28,7 +29,7 @@ namespace api.Controllers
         {
             var stock = await _stockService.GetByIdAsync(id);
 
-            if(stock == null)
+            if (stock == null)
             {
                 return NotFound();
             }
@@ -36,5 +37,30 @@ namespace api.Controllers
             return Ok(stock);
         }
 
+        [HttpPost]
+        public async Task<StockDto> AddAsync([FromBody] CreateStockDto dto)
+        {
+            var stock = await _stockService.AddAsync(dto);
+            return stock;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateStockDto updateStockDto)
+        {
+            var stock = await _stockService.UpdateAsync(id, updateStockDto);
+            if (stock == null)
+            {
+                return NotFound();
+            }
+            return Ok(stock);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        {
+            await _stockService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }
