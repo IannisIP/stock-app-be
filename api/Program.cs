@@ -3,6 +3,8 @@ using api.Repository;
 using api.Repository.Interfaces;
 using api.Services;
 using api.Services.Interfaces;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCommentDtoValidator>();
+
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {

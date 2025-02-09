@@ -33,9 +33,21 @@ namespace api.Controllers
         [HttpPost("{stockId}")]
         public async Task<IActionResult> AddAsync([FromRoute] int stockId, CreateCommentDto createCommentDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var comment = await _commentService.AddAsync(stockId, createCommentDto);
 
             return Ok(comment);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute]int id)
+        {
+            await _commentService.DeleteAsync(id);
+            return NoContent();
         }
     }
 }
