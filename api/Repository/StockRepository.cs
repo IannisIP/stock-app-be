@@ -24,12 +24,12 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync()
         {
-            return await _dBContext.Stocks.ToListAsync();
+            return await _dBContext.Stocks.Include(x => x.Comments).ToListAsync();
         }
 
         public async Task<Stock> GetByIdAsync(int id)
         {
-            var stock = await _dBContext.Stocks.FirstOrDefaultAsync(x => x.Id == id);
+            var stock = await _dBContext.Stocks.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == id);
             if (stock == null)
             {
                 throw new KeyNotFoundException($"Stock with id {id} not found.");
