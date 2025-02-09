@@ -7,5 +7,6 @@ namespace api.Services.Interfaces
         public Task<List<CommentDto>> GetAllAsync();
         public Task<CommentDto> GetByIdAsync(int id);
         public Task<CreateCommentDto> AddAsync(int id, CreateCommentDto createCommentDto);
+        public Task<CommentDto> DeleteAsync(int id);
     }
 }

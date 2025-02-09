@@ -1,4 +1,6 @@
 ﻿using api.Data;
+using api.Dtos.Comment;
+using api.Mappers;
 using api.Models;
 using api.Repository.Interfaces;
 using api.Services.Interfaces;
@@ -35,6 +37,17 @@ namespace api.Repository
             {
                 throw new Exception($"Comment with id {id} not found");
             }
+
+            return comment;
+        }
+
+        public async Task<Comment> DeleteAsync(int id)
+        {
+            var comment = await GetByIdAsync(id);
+
+            _dbContext.Remove(comment);
+
+            await _dbContext.SaveChangesAsync();
 
             return comment;
         }

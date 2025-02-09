@@ -1,5 +1,6 @@
 ﻿using api.Dtos.Comment;
 using api.Mappers;
+using api.Models;
 using api.Repository.Interfaces;
 using api.Services.Interfaces;
 
@@ -23,6 +24,12 @@ namespace api.Services
             await _commentRepository.AddAsync(createCommentDto.toCommentFromCreateCommentDto(id));
 
             return createCommentDto;
+        }
+
+        public async Task<CommentDto> DeleteAsync(int id)
+        {
+            var comment =  await _commentRepository.DeleteAsync(id);
+            return comment.toCommentDto();
         }
 
         public async Task<List<CommentDto>> GetAllAsync()
